@@ -16,12 +16,11 @@ Get-ADComputer -Filter * | Select Name,OperatingSystem
 **Salida**
 
 ```
-dc01
-dc02
-fs01
-cliente01
-cliente02
-cliente03
+salida
+salida
+salida
+salida
+salida
 ```
 
 ## 2. Estructura de ficheros en D: desde el DC1
@@ -35,11 +34,12 @@ tree \\FS01\empresa
 **Salida**
 
 ```
-empresa
-comun
-tecnicos
-comerciales
-direccion
+salida
+salida
+salida
+salida
+salida
+
 ```
 
 ---
@@ -58,20 +58,13 @@ Get-ADGroup -Filter * | Select Name
 
 **Salida**
 ```
-OU_Tecnicos
-OU_Comerciales
-OU_Equipos
-Administrador
-adm_dominio
-adm_fileserver
-tecnico1
-tecnico2
-comercial1
-comercial2
-GG_Tecnicos
-GG_Comerciales
-Domain Admins
-Domain Users
+salida
+salida
+salida
+salida
+salida
+salida
+
 ```
 ---
 
@@ -85,10 +78,13 @@ Get-ADUser -Filter * -Properties ProfilePath | Select Name, ProfilePath
 
 **Salida**
 ```
-tecnico1 \FS01\perfiles\tecnico1
-tecnico2 \FS01\perfiles\tecnico2
-comercial1 \FS01\perfiles\comercial1
-comercial2 \FS01\perfiles\comercial2
+salida
+salida
+salida
+salida
+salida
+salida
+
 ```
 ---
 
@@ -106,15 +102,13 @@ ssh usuario@CLIENT03 "ls /etc/fstab"
 
 **Salida**
 ```
-tecnico BUILTIN\Administrators NT AUTHORITY\SYSTEM Allow FullControl
-BUILTIN\Administrators Allow FullControl
-EMPRESA\tecnico1 Allow Modify, Synchronize
-tecnico1
-tecnico2
-comercial1
-comercial2
-usuarios
-/etc/fstab
+salida
+salida
+salida
+salida
+salida
+salida
+
 ```
 ---
 
@@ -128,11 +122,12 @@ gpresult /r
 
 **Salida**
 ```
-Applied Group Policy Objects
+salida
+salida
+salida
+salida
+salida
 
-Default Domain Policy
-GPO_Equipos
-GPO_Usuarios
 ```
 ---
 
@@ -146,13 +141,12 @@ Get-ADUser comercial1 -Properties LogonHours,LogonWorkstations
 
 **Salida**
 ```
-DistinguishedName : CN=comercial1,OU=OU_Comerciales,DC=empresa,DC=local
-GivenName : comercial1
-Name : comercial1
-ObjectClass : user
-SamAccountName : comercial1
-LogonHours :
-LogonWorkstations : CLIENTE01,CLIENTE02
+salida
+salida
+salida
+salida
+salida
+
 ````
 ---
 
@@ -169,8 +163,10 @@ where putty
 
 **Salida**
 ```
-tecnico1@'s password:
-Welcome to Ubuntu 24.04 LTS
-tecnico1@cliente03:~$
-C:\Program Files\PuTTY\putty.exe
+salida
+salida
+salida
+salida
+salida
+
 ```
