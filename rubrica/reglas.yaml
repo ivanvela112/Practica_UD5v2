@@ -1,0 +1,93 @@
+checks:
+
+  ejercicio1_equipos:
+    descripcion: "Estructura del dominio, DC y equipos desde DC1"
+    puntos: 1
+    textos:
+      - "Get-ADComputer -Filter * | Select Name,OperatingSystem"
+    contiene:
+      - "dc01"
+      - "dc02"
+      - "fs01"
+      - "cliente01"
+      - "cliente02"
+      - "cliente03"
+
+  ejercicio2_estructura:
+    descripcion: "Estructura de ficheros en D desde DC1"
+    puntos: 1
+    textos:
+      - "tree \\\\FS01\\empresa"
+    contiene:
+      - "empresa"
+      - "comun"
+      - "tecnicos"
+      - "comerciales"
+      - "direccion"
+
+  ejercicio3_directorio:
+    descripcion: "Unidades organizativas, usuarios y grupos del dominio"
+    puntos: 1
+    textos:
+      - "Get-ADOrganizationalUnit -Filter * | Select Name"
+      - "Get-ADUser -Filter * | Select Name"
+      - "Get-ADGroup -Filter * | Select Name"
+    contiene:
+      - "ou"
+      - "tecnico"
+      - "comercial"
+
+  ejercicio4_perfiles:
+    descripcion: "Carpetas V6 de perfiles móviles"
+    puntos: 1
+    textos:
+      - "Get-ADUser -Filter * -Properties ProfilePath | Select Name, ProfilePath"
+    contiene:
+      - "\\FS01"
+      - "tecnico1"
+      - "tecnico2"
+      - "comercial1"
+      - "comercial2"
+
+  ejercicio5_permisos:
+    descripcion: "Carpetas compartidas, permisos y samba"
+    puntos: 1
+    textos:
+      - "Get-Acl D:\\empresa\\tecnico"
+      - "Get-ChildItem \\\\FS01\\usuarios | Select Name"
+      - "ssh usuario@CLIENT03 \"ls /etc/fstab\""
+    contiene:
+      - "tecnico"
+      - "system"
+      - "administrators"
+      - "usuarios"
+      - "fstab"
+
+  ejercicio6_gpo:
+    descripcion: "Comprobación de GPOs funcionando"
+    puntos: 1
+    textos:
+      - "gpresult /r"
+    contiene:
+      - "group policy"
+      - "applied"
+
+  ejercicio7_logon:
+    descripcion: "Restricciones de login"
+    puntos: 1
+    textos:
+      - "Get-ADUser comercial1 -Properties LogonHours,LogonWorkstations"
+    contiene:
+      - "logonhours"
+      - "logonworkstations"
+
+  ejercicio8_conectividad:
+    descripcion: "Conectividad SSH y PuTTY"
+    puntos: 1
+    textos:
+      - "ssh tecnico1@cliente03"
+      - "where putty"
+    contiene:
+      - "cliente03"
+      - "tecnico1"
+      - "putty"

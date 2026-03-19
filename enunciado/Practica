@@ -1,0 +1,140 @@
+Proyecto UD5: Implantación de infraestructura de dominio y servidor de archivos
+Contexto del proyecto
+Una empresa llamada TecnoSoluciones S.L. necesita implantar una infraestructura de red centralizada basada en Windows Server 2022 y Active Directory.
+El objetivo es permitir la gestión centralizada de:
+•	usuarios
+•	permisos
+•	almacenamiento de datos
+•	políticas de seguridad
+•	acceso remoto
+La infraestructura deberá permitir que los usuarios trabajen desde diferentes equipos manteniendo su configuración y acceso a los recursos de la empresa.
+________________________________________
+1. Arquitectura de la infraestructura
+La infraestructura mínima estará compuesta por:
+Servidores
+DC01 – Controlador de dominio
+Windows Server 2022 core
+Servicios:
+Active Directory
+DNS
+
+DC02 – Segundo controlador de dominio
+Windows Server 2022 core
+Replica del dominio
+FS01 – Servidor de archivos (Crear disco D para todo)
+Windows Server 2022
+Perfiles móviles
+Carpetas personales
+Carpetas compartidas
+GPO: Install-WindowsFeature RSAT-AD-Tools
+Install-WindowsFeature GPMC
+________________________________________
+Clientes
+CLIENT01
+Windows 10
+Unido al dominio
+CLIENT02
+Windows 10
+Unido al dominio
+CLIENT03
+Ubuntu 24
+Unido al dominio
+________________________________________
+2. Objetivos del proyecto
+El alumnado deberá:
+•	implementar un dominio Active Directory
+•	añadir un segundo controlador de dominio
+•	unir equipos Windows y Linux al dominio
+•	configurar perfiles móviles
+•	implementar servidor de archivos
+•	configurar permisos mediante grupos
+•	aplicar directivas de grupo
+•	configurar acceso remoto mediante SSH
+•	aplicar políticas de seguridad
+________________________________________
+3. Organización de la empresa
+La empresa tiene dos departamentos:
+Técnicos
+Comerciales
+Se deberán crear las siguientes Unidades Organizativas (OU)
+OU_Tecnicos
+OU_Comerciales
+OU_Equipos
+________________________________________
+4. Usuarios y grupos
+Crear dos usuarios administradores:
+
+adm_dominio	administración del dominio
+adm_fileserver	administración del servidor FS01
+El usuario administrador lo dejaremos tranquilo tras la primera instalación del primer servidor.
+Usuarios
+tecnico1
+tecnico2
+comercial1
+comercial2
+Grupos
+GG_Tecnicos
+GG_Comerciales
+Aplicar modelo AGDLP para permisos.
+________________________________________
+5. Perfiles móviles
+Los perfiles deberán almacenarse en el servidor de archivos.
+El alumnado deberá demostrar que:
+•	el perfil se carga desde el servidor
+•	los cambios se sincronizan
+•	el usuario mantiene su configuración en diferentes equipos.
+________________________________________
+6. Carpetas personales
+Cada usuario deberá tener una carpeta personal conectada como unidad de red.
+________________________________________
+7. Carpetas compartidas
+Crear en el servidor de archivos la siguiente estructura:
+D:\empresa
+│
+├── común
+├── técnicos
+├── comerciales
+└── dirección
+________________________________________
+8. Directivas de grupo
+Se deberán crear al menos 4 GPO.
+GPO de dominio
+Ejemplos:
+•	fondo de pantalla corporativo
+•	bloqueo del panel de control
+•	restricción de configuración de red
+________________________________________
+GPO por OU
+Ejemplos:
+Técnicos
+•	acceso a herramientas administrativas
+Comerciales
+•	restricción de aplicaciones
+________________________________________
+9. Restricciones de seguridad
+Implementar:
+Restricción de inicio de sesión
+Los comerciales solo pueden iniciar sesión:
+09:00 – 14:00
+Restricción de equipos
+Los comerciales no podrán iniciar sesión en equipos Windows 10.
+________________________________________
+10. Integración con Linux
+El equipo Ubuntu deberá:
+•	unirse al dominio
+•	autenticarse con usuarios del dominio
+•	acceder a carpetas compartidas del servidor
+________________________________________
+11. Acceso remoto (parte avanzada)
+La empresa dispone de un sistema Linux integrado en la red corporativa.
+Los técnicos deberán acceder desde un cliente Windows 10 mediante SSH para realizar tareas básicas de administración remota.
+El alumnado deberá demostrar:
+•	conexión SSH
+•	Comprobar identidad y pertenencia al dominio
+•	Comprobar acceso a recursos compartidos
+•	Comprobar que Linux lee las carpetas compartidas mediante samba cifs
+•	Crear un script para montar la carpeta compartida automáticamente 
+sudo nano /etc/fstab (Pregúntale a chatgpt el contenido)
+
+Los técnicos de sistemas deberán también utilizar la herramienta PuTTY desde un cliente Windows para acceder mediante SSH al sistema Ubuntu de la infraestructura.
+Una vez conectados deberán realizar varias comprobaciones del sistema y demostrar la conectividad con el resto de servidores de la red.

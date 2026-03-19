@@ -1,0 +1,66 @@
+name: Autocorreccion
+
+on:
+  push:
+    paths:
+      - "entrega/respuesta.md"
+      - "rubrica/reglas.yaml"
+      - "scripts/corregir.py"
+      - ".github/workflows/correccion.yml"
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  corregir:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v5
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install pyyaml
+
+      - name: Comprobar estructura del repositorio
+        run: |
+          pwd
+          echo "==== Árbol de archivos ===="
+          ls -R
+          echo "==== Comprobación de rutas esperadas ===="
+          test -f entrega/respuesta.md && echo "OK entrega/respuesta.md" || echo "FALTA entrega/respuesta.md"
+          test -f rubrica/reglas.yaml && echo "OK rubrica/reglas.yaml" || echo "FALTA rubrica/reglas.yaml"
+          test -f scripts/corregir.py && echo "OK scripts/corregir.py" || echo "FALTA scripts/corregir.py"
+
+      - name: Validar YAML de reglas
+        run: |
+          python - <<'PY'
+          import yaml
+          from pathlib import Path
+          p = Path("rubrica/reglas.yaml")
+          data = yaml.safe_load(p.read_text(encoding="utf-8"))
+          print("YAML cargado correctamente")
+          print("Checks:", list(data.get("checks", {}).keys()))
+          PY
+
+      - name: Ejecutar corrección
+        run: python scripts/corregir.py
+
+      - name: Mostrar feedback
+        if: always()
+        run: |
+          echo "==== feedback.md ===="
+          test -f feedback.md && cat feedback.md || echo "No se ha generado feedback.md"
+
+      - name: Subir feedback
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: feedback
+          path: feedback.md
