@@ -47,19 +47,19 @@ def buscar_salidas_por_regla(textos_objetivo: list[str], mapa_bloques: dict[str,
     return "\n".join(salidas)
 
 
-def evaluar_regla(nombre: str, regla: dict, mapa_bloques: dict[str, str]) -> tuple[bool, str]:
+def evaluar_regla(regla: dict, mapa_bloques: dict[str, str]) -> tuple[bool, str]:
     textos = regla.get("textos", [])
     esperados = regla.get("contiene", [])
 
     salida = buscar_salidas_por_regla(textos, mapa_bloques)
     if not salida.strip():
-        return False, "No se encontró la salida del ejercicio"
+        return False, "Incompleto"
 
     salida_norm = normalizar(salida)
     faltan = [item for item in esperados if normalizar(item) not in salida_norm]
 
     if faltan:
-        return False, f"Faltan: {', '.join(faltan)}"
+        return False, "Incompleto"
 
     return True, "Correcto"
 
@@ -85,12 +85,12 @@ def main() -> None:
         puntos = float(regla.get("puntos", 1))
         maximo += puntos
 
-        ok, detalle = evaluar_regla(nombre, regla, mapa_bloques)
+        ok, estado = evaluar_regla(regla, mapa_bloques)
         if ok:
             total += puntos
-            resultados.append(f"✅ {nombre}: {detalle} (+{puntos})")
+            resultados.append(f"✅ {nombre} (+{puntos})")
         else:
-            resultados.append(f"❌ {nombre}: {detalle} (+0)")
+            resultados.append(f"❌ {nombre} (Incompleto)")
 
     nota_auto = round(total, 2)
 
@@ -98,12 +98,6 @@ def main() -> None:
         "# Feedback automático",
         "",
         f"**Puntuación automática:** {nota_auto}/8",
-        "",
-        "## Interpretación de la nota",
-        "",
-        "- Esta nota corresponde solo a la parte autocorregible del proyecto.",
-        "- El profesor añadirá manualmente hasta 2 puntos más.",
-        "- Nota final prevista: automática (/8) + docente (/2).",
         "",
         "## Detalle",
         "",
@@ -116,4 +110,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    main()
     main()
